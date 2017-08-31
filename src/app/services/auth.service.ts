@@ -54,8 +54,6 @@ export class AuthService {
         status: status
       }
 
-     
-  
       this.db.object(path).update(data)
       .catch(error => console.log(error))
     }

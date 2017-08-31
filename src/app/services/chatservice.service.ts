@@ -12,27 +12,43 @@ import * as firebase from 'firebase/app';
 export class ChatService {
   chatMessages: FirebaseListObservable<ChatMessage[]>;
   chatMessage: ChatMessage;
-  user: any;
+  user: firebase.User;
   userName: Observable<string>
 
   constructor(
     private db: AngularFireDatabase,
     private afAuth: AngularFireAuth
   ) {
-    // this.afAuth.authState.subscribe(auth => {
-    //   if (auth !== undefined && auth !== null) {
-    //     this.user = auth;
-    //   }
-    // })
+    this.afAuth.authState.subscribe(auth => {
+      if (auth !== undefined && auth !== null) {
+        this.user = auth;
+      }
+      this.getUser().subscribe(user => {
+        this.userName = user.userName
+      })
+    })
   }
+
+  getUser(){
+    const userId = this.user.uid;
+    const path = `/users/${userId}`;
+    return this.db.object(path);
+  }
+
+  getUsers(){
+     const path = `/users`;
+     return this.db.list(path);
+  }
+
   sendMessage(msg: string) {
     const timestamp = this.getTimeStamp();
-     const email = "test@test.com";
+    const email = this.user.email;
+
     this.chatMessages = this.getMessages();
     this.chatMessages.push({
       message: msg,
       timeSend: timestamp,
-      userName: "test",
+      userName: this.userName,
       email: email
     });
     console.log("sendMessage")

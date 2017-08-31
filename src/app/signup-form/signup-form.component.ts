@@ -22,8 +22,8 @@ export class SignupFormComponent   {
     const displayName = this.displayName;
 
     this.authService.signUp(email, password, displayName)
-    .then(resolve => this.router.navigate(['chat']))
-    .catch(error => this.errorMsg = error.message);
-    
+      .then(resolve => this.router.navigate(['chat']))
+      .catch(error => this.errorMsg = error.message);
+
   }
 }

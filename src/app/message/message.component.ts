@@ -15,7 +15,8 @@ export class MessageComponent implements OnInit {
   userEmail: string;
   userName: string;
   messageContent: string;
-  timeStamp: Date;
+  timeStamp: Date = new Date();
+  isOwnMessage: boolean;
 
   ngOnInit(chatMessage = this.chatMessage) {
     this.messageContent = chatMessage.message;
